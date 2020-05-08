@@ -1,0 +1,12 @@
+[Unit]
+Description=ROT13 demo service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/bin/env php /tmp/server.php
+
+[Install]
+WantedBy=multi-user.target
