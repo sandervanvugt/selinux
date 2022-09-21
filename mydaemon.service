@@ -1,0 +1,9 @@
+[Unit]
+Description=Simple testing daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/mydaemon
+
+[Install]
+WantedBy=multi-user.target
