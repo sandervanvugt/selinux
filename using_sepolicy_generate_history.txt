@@ -1,0 +1,24 @@
+This is the cleaned up procedure that shows how to generate a policy for mydaemon.c
+
+   44  git clone https://github.com/sandervanvugt/selinux
+   45  cd selinux/
+   46  dnf install policycoreutils-devel setools-console gcc
+   47  gcc -o mydaemon mydaemon.c
+   48  cp mydaemon /usr/local/bin/
+   49  cp mydaemon.service /usr/lib/systemd/system/
+   50  systemctl start mydaemon
+   51  systemctl status mydaemon
+   53  ps -efZ | grep mydaemon
+   54  sepolicy generate --init /usr/local/bin/mydaemon
+   55  ./mydaemon.sh 
+   57  systemctl restart mydaemon
+   58  ps -efZ | grep mydaemon
+   59  grep AVC /var/log/audit/audit.log 
+   66  ausearch -m AVC -ts recent | audit2allow -R
+   67  cat /usr/share/selinux/devel/include/system/logging.if 
+   68  echo "logging_write_generic_logs(mydaemon_t)" >> mydaemon.te
+   70  ./mydaemon.sh
+   71  ps -efZ | grep mydaemon
+   72  ausearch -m AVC -ts recent
+   73  date -d '@1663923961'
+
