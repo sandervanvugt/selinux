@@ -1,0 +1,9 @@
+[Unit]
+Description=lab 9 service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/myapp
+
+[Install]
+WantedBy=multi-user.target

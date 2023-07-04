@@ -1,0 +1,19 @@
+
+module my-VGAuthService 1.0;
+
+require {
+	type vmware_log_t;
+	type init_t;
+	class file { append open setattr };
+	class vsock_socket { bind connect create };
+}
+
+#============= init_t ==============
+allow init_t self:vsock_socket create;
+
+#!!!! This avc is allowed in the current policy
+allow init_t self:vsock_socket { bind connect };
+
+#!!!! This avc is allowed in the current policy
+allow init_t vmware_log_t:file append;
+allow init_t vmware_log_t:file { open setattr };

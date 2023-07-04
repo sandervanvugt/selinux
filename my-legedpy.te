@@ -1,0 +1,11 @@
+
+module my-legedpy 1.0;
+
+require {
+	type usr_t;
+	type init_t;
+	class file execute_no_trans;
+}
+
+#============= init_t ==============
+allow init_t usr_t:file execute_no_trans;

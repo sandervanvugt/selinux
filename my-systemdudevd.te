@@ -1,0 +1,13 @@
+
+module my-systemdudevd 1.0;
+
+require {
+	type systemd_hwdb_etc_t;
+	type udev_t;
+	class system module_load;
+	class file getattr;
+}
+
+#============= udev_t ==============
+allow udev_t self:system module_load;
+allow udev_t systemd_hwdb_etc_t:file getattr;

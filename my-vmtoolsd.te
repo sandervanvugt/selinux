@@ -1,0 +1,16 @@
+
+module my-vmtoolsd 1.0;
+
+require {
+	type vmware_log_t;
+	type vsock_device_t;
+	type init_t;
+	class vsock_socket { bind connect getattr getopt };
+	class chr_file { ioctl open read };
+	class file append;
+}
+
+#============= init_t ==============
+allow init_t self:vsock_socket { bind connect getattr getopt };
+allow init_t vmware_log_t:file append;
+allow init_t vsock_device_t:chr_file { ioctl open read };

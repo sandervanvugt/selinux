@@ -1,0 +1,6 @@
+#!/bin/bash
+
+while sleep 60
+do
+	echo $(date) >> /tmp/myappfile.txt
+done
