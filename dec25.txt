@@ -1,0 +1,170 @@
+    1  dnf install -y httpd
+    2  systemctl enable --now httpd
+    3  vim /etc/hosts
+    4  ps Zaux | grep http
+    5  ls -ldZ /var/www
+    6  ls -lZ /var/www
+    7  ls -ldZ /var/tmp
+    8  mkdir /web
+    9  echo hello > /web/index.html
+   10  ls -Z /web/index.html 
+   11  ls -Zl /web/index.html 
+   12  ls -l /web/index.html 
+   13  ls -lZ /web/index.html 
+   14  vim /etc/httpd/conf/httpd.conf 
+   15  systemctl restart httpd
+   16  curl localhost
+   17  getenforce
+   18  setenforce permissive
+   19  curl localhost
+   20  cd /var/log/
+   21  ls
+   22  cd httpd/
+   23  ls
+   24  ls -l
+   25  less error_log 
+   26  less access_log 
+   27  grep -i error error_log 
+   28  vim /etc/httpd/conf/httpd.conf 
+   29  systemctl restart httpd
+   30  curl localhost
+   31  getenforce
+   32  setenforce enforcing
+   33  curl localhost
+   34  history
+   35  cd
+   36  ps aux | grep audit
+   37  cd /var/log/audit/
+   38  ls
+   39  ls -l
+   40  grep AVC audit.log 
+   41  date -d @1764769632
+   42  cd
+   43  dnf install -y git
+   44  git clone https://github.com/sandervanvugt/selinux
+   45  cd selinux/
+   46  ls
+   47  history
+   48  grep AVC /var/log/audit/audit.log 
+   49  vim /etc/sysconfig/selinux 
+   50  reboot
+   51  cd selinux/
+   52  ./countdown 12
+   53  cd selinux/
+   54  ./countdown 12
+   55  ls -lZ /var/www
+   56  ls -Z /etc/shadow
+   57  dnf install selinux-policy-doc -y
+   58  man -k _selinux
+   59  man -k _selinux | wc -l
+   60  man -k _selinux | grep http
+   61  man httpd_selinux 
+   62  history
+   63  journalctl | grep sealert
+   64  journalctl
+   65  grep sealert /var/log/messages 
+   66  sealert -l 7b832c2a-5a07-48b1-bf78-8813fab3ab29 | less
+   67  # ausearch -c 'httpd' --raw | audit2allow -M my-httpd
+   68  # semodule -X 300 -i my-httpd.pp
+   69  ausearch -c 'httpd' --raw | audit2allow -M pleasehackme
+   70  ausearch -c 'httpd' --raw > myfile.txt
+   71  vim myfile.txt 
+   72  cat myfile.txt | audit2allow -M nowimfine
+   73  vim /etc/httpd/conf/httpd.conf 
+   74  systemctl restart httpd
+   75  systemctl status httpd.service
+   76  grep AVC /var/log/audit/audit.log 
+   77  journalctl | grep sealert
+   78  sealert -l 5a3d6099-8f2f-46a6-b0db-5c1c99a91bfa | less
+   79  man semanage-port
+   80  semanage port -a -t http_port_t -p tcp 82
+   81  systemctl restart httpd
+   82  systemctl status httpd
+   83  history
+   84  cat /etc/selinux/targeted/contexts/customizable_types 
+   85  touch /tmp/customizable1
+   86  ls -Z /tmp/customizable1 
+   87  chcon -t container_file_t /tmp/customizable1 
+   88  ls -Z /tmp/customizable1 
+   89  restorecon -Rv /tmp
+   90  ls -Z /tmp/customizable1 
+   91  getsebool 
+   92  getsebool -a
+   93  getsebool -a | wc -l
+   94  getsebool -a | grep http
+   95  setsebool -P httpd_enable_homedirs
+   96  setsebool -P httpd_enable_homedirs=on
+   97  getsebool -a | grep http
+   98  seinfo -b -C
+   99  seinfo -b httpd_verify_dns -C
+  100  seinfo -b httpd_verify_dns -c
+  101  grep AVC /var/log/audit/audit.log 
+  102  sesearch -s httpd_t -t reserved_port_t -A
+  103  history
+  104  vim /etc/httpd/conf.d/userdir.conf 
+  105  useradd anna
+  106  chmod -R 755 /home/anna
+  107  su - anna
+  108  vim /etc/httpd/conf/httpd.conf 
+  109  systemctl restart httpd
+  110  grep AVC /var/log/audit/audit.log | grep user_content
+  111  grep AVC /var/log/audit/audit.log 
+  112  setsebool -P httpd_enable_home_dirs off
+  113  getsebool -a | grep httpd
+  114  setsebool -P httpd_enable_homedirs off
+  115  grep AVC /var/log/audit/audit.log 
+  116  sesearch -s httpd_t -t httpd_user_content_t -A
+  117  setsebool -P httpd_enable_homedirs on
+  118  semodule -l
+  119  semodule -d zarafa
+  120  vim sander.te
+  121  vim sander.fc
+  122  checkmodule -M -m -o sander.mod sander.te
+  123  semodule_package -o sander.pp -m sander.mod -f sander.fc
+  124  ls -l sander*
+  125  semodule -i sander.pp
+  126  mkdir /opt/sander
+  127  restorecon -Rv /opt/sander
+  128  cd selinux/
+  129  ls
+  130  semanage permissive -l
+  131  seinfo -tunconfined_t
+  132  seinfo -aunconfined_domain_type -x
+  133  seinfo -a unconfined_domain_type -x
+  134  seinfo -t unconfined_t
+  135  history
+  136  dnf install policycoreutils-devel setools-console gcc
+  137  ls
+  138  vim mydaemon.c 
+  139  gcc -o mydaemon mydaemon.c
+  140  history
+  141  ls myd*
+  142  cp mydaemon /usr/local/bin
+  143  vim mydaemon.service 
+  144  cp mydaemon.service /etc/systemd/system
+  145  systemctl start mydaemon
+  146  ps Zaux | grep mydaemon
+  147  sepolicy generate --init /usr/local/bin/mydaemon
+  148  cat mydaemon.service 
+  149  cat mydaemon.te 
+  150  cat mydaemon.if
+  151  cat mydaemon.fc
+  152  ./mydaemon.sh 
+  153  systemctl restart mydaemon
+  154  ps Zaux | grep mydaemon
+  155  grep AVC /var/log/audit/audit.log 
+  156  sealert -l "*"
+  157  journalctl | grep sealert
+  158  sealert -l c852f18f-4345-45e4-8062-b95219f9c5b4 | less
+  159  ausearch -m AVC -ts recent | audit2allow -R
+  160  cat /usr/share/selinux/devel/include/system/logging.if 
+  161  echo "logging_write_generic_logs(mydaemon_t)" >> mydaemon.te
+  162  ./mydaemon.sh 
+  163  ps Zaux | grep mydaemon
+  164  date
+  165  grep AVC /var/log/audit/audit.log 
+  166  date -d @1764782991
+  167  cat mydaemon.fc
+  168  exit
+  169  cp sander* /tmp
+  170  history > /tmp/dec25.txt
