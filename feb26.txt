@@ -1,0 +1,280 @@
+    1  sudo -i
+    2  sudo -i
+    3  sudo reboot
+    4  sudo -i
+    5  sudo -i
+    6  mkdir storage
+    7  podman run -v storage:/storage:Z -it busybox
+    8  podman -d nginx
+    9  podman run -d nginx
+   10  history
+   11  ls -ldZ storage/
+   12  podman run -v ubi:/ubi:Z -it docker.io/redhat/ubi9
+   13  ls -Zd ubi
+   14  ls
+   15  podman rm -f 4927
+   16  mkdir ubi
+   17  podman run -v ubi:/ubi:Z -it docker.io/redhat/ubi9
+   18  ls -Zdl ubi/
+   19  mkdir mydb
+   20  #podman -d -v mydb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password 
+   21  podman search mariadb
+   22  podman -d -v mydb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password registry.redhat.io/rhel10/mariadb-1011
+   23  podman run -d -v mydb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password registry.redhat.io/rhel10/mariadb-1011
+   24  podman login registry.redhat.io
+   25  podman run -d -v mydb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password registry.redhat.io/rhel10/mariadb-1011
+   26  podman ps
+   27  ls -dZl mydb/
+   28  ls -lZ mydb/
+   29  podman logs e31
+   30  podman ps
+   31  podman exec -it e31 /bin/bash
+   32  podman rm -f e31
+   33  podman run -d -v ./mydb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password registry.redhat.io/rhel10/mariadb-1011
+   34  ls -dZ mydb/
+   35  ls -Z mydb/
+   36  podman volumes list
+   37  podman volume list
+   38  podman ps
+   39  podman volume rm mydb
+   40  podman run -d -v /home/student/mydb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password registry.redhat.io/rhel10/mariadb-1011
+   41  podman ps
+   42  podman ps -a
+   43  podman logs 90a7
+   44  lsns
+   45  podman unshare chown 27:27 ./mydb/
+   46  ls -ld mydb/
+   47  podman run -d -v /home/student/mydb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password registry.redhat.io/rhel10/mariadb-1011
+   48  podman ps
+   49  podman run -d -v /home/student/mydb:/var/lib/mysql:Z -e MYSQL_ROOT_PASSWORD=password registry.redhat.io/rhel10/mariadb-1011
+   50  podman ps
+   51  ls -lZd mydb/
+   52  ps Zaux | grep c255
+   53  history > /tmp/feb26.txt
+ROOT COMMANDS
+    1  cd selinux/
+    2  ./countdown 13
+    3  dnf install -y httpd
+    4  vim /var/www/html/index.html
+    5  systemctl enable --now httpd
+    6  curl localhost
+    7  ls -l /var/www
+    8  ps Zaux | grep http
+    9  ls -lZ /var/www
+   10  mkdir /web
+   11  vim /web/index.html
+   12  vim /etc/httpd/conf/httpd.conf 
+   13  systemctl restart httpd
+   14  curl localhost
+   15  ls -dZ /web
+   16  ps Zaux | grep httpd
+   17  ls -dZ /var/tmp
+   18  ls -lZ /web/index.html 
+   19  ls -dZ /web
+   20  ps auxZ |  grep httpd
+   21  geteforce
+   22  getenforce
+   23  setenforce Permissive
+   24  getenforce
+   25  curl localhost
+   26  cd /var/log
+   27  ls
+   28  cd httpd/
+   29  ls
+   30  cat error_log 
+   31  vim /etc/httpd/conf/httpd.conf 
+   32  systemctl restart httpd
+   33  curl localhost
+   34  getenforce
+   35  setenforce enforcing
+   36  curl localhost
+   37  history
+   38  cd
+   39  dnf install -y git
+   40  git clone https://github.com/sandervanvugt/selinux
+   41  history
+   42  reboot
+   43  getenforce
+   44  ls -Z /etc/shadow
+   45  passwd
+   46  ls -Z
+   47  ls -Z /etc/shadow
+   48  reboot
+   49  seinfo
+   50  git clone https://github.com/SELinuxProject/refpolicy
+   51  systemctl status httpd
+   52  curl localhost
+   53  vim /etc/httpd/conf/httpd.conf 
+   54  getenforce
+   55  grep AVC /var/log/audit/audit.log 
+   56  date -d @1771346565
+   57  ls -dZ /var/www/html/ /web
+   58  man semanage-fcontext
+   59  # semanage fcontext -a -t httpd_sys_content_t "/web(/.*)?"
+   60         # restorecon -R -v /web
+   61  semanage fcontext -a -t httpd_sys_content_t "/web(/.*)?"
+   62  cd /etc/selinux/targeted/
+   63  ls
+   64  cd contexts/files/
+   65  ls
+   66  cat file_contexts.local
+   67  ls -Zd /web
+   68  restorecon -Rv /web
+   69  ls -Zd /web
+   70  curl localhost
+   71  history
+   72  cd
+   73  grep avc /var/log/audit/audit.log | grep http
+   74  ls -Zd /etc
+   75  ls -Z /etc/hosts
+   76  semanage fcontext -a -t public_content_t /etc/bogus
+   77  touch /etc/bogus
+   78  ls -Z /etc/bogus
+   79  restorecon -v /etc/bogus
+   80  dnf list selinux*
+   81  dnf list selinux
+   82  dnf list all selinux
+   83  dnf list all selinux*
+   84  dnf install selinux-policy-doc
+   85  dnf list selinux*
+   86  man -k _selinux
+   87  man -k _selinux | wc -l
+   88  dnf list "selinux*"
+   89  dnf list selinux\*
+   90  man -k _selinux | grep http
+   91  man httpd_selinux 
+   92  cd selinux/
+   93  history
+   94  sesearch
+   95  sesearch --allow -s httpd_t
+   96  history
+   97  restorecon -nv
+   98  semanage fcontect -a -t public_content_rw_t /tmp/whatever
+   99  semanage fcontext -a -t public_content_rw_t /tmp/whatever
+  100  semanage fcontext -a -t public_content_t /tmp/whatever
+  101  semanage fcontext -a -t httpd_sys_content_t /tmp/whatever
+  102  restorecon -nv
+  103  restorecon -nv /
+  104  man restorecon
+  105  restorecon -Rnv /
+  106  cd
+  107  touch /tmp/chconfile
+  108  chcon -t httpd_sys_content_t /tmp/chconfile 
+  109  ls -Z /tmp/chconfile 
+  110  restorecon -Rv /mtp
+  111  restorecon -Rv /tmp
+  112  ls -Z /tmp/chconfile 
+  113  chcon -t httpd_sys_content_t /etc/hosts
+  114  ls -Z /etc/hosts
+  115  restorecon -v /etc/hosts
+  116  man semanage-port
+  117  vim /etc/httpd/conf/httpd.conf 
+  118  systemctl restart httpd
+  119  systemctl status httpd
+  120  grep avc /var/log/audit/audit.log 
+  121  man semanage-port
+  122  semanage port -a -t http_port_t -p tcp 82
+  123  systemctl restart httpd
+  124  semanage port -C -l
+  125  semanage port -l
+  126  semanage port -l | grep 82
+  127  dnf update -y
+  128  reboot
+  129  cd selinux/
+  130  ./countdown 1
+  131  ./countdown 13
+  132  ./countdown 4
+  133  semanage port -a -t http_port_t -p tcp 82
+  134  systemctl restart httpd
+  135  ss -tunap | grep 82
+  136  history
+  137  semanage port -C -l
+  138  semanage fcontext -C -l
+  139  getsebool -a
+  140  getsebool -a | wc -l
+  141  getsebool -a | grep http
+  142  setsebool -P httpd_use_cifs on
+  143  grep AVC /var/log/audit/audit.log | grep http
+  144  grep AVC /var/log/audit/audit.log | grep http > httpaudit.log
+  145  vim httpaudit.log 
+  146  cat httpaudit.log | audit2allow -M myhttp
+  147  journalctl | grep sealert
+  148  sealert -l 6e2580a5-5b23-46db-b7aa-0794f4513021 | less
+  149  mkdir /apache
+  150  vim /apache/index.html
+  151  vim /etc/httpd/conf/httpd.conf 
+  152  systemctl restart httpd
+  153  curl localhost
+  154  journalctl | grep sealert
+  155  sealert -l a9b9bd7d-7630-47f0-8e58-66e33ad52bd0 | less
+  156  history
+  157  semodule -l
+  158  semodule -d zarafa
+  159  seinfo -c
+  160  grep avc /var/log/audit/audit.log 
+  161  grep AVC /var/log/audit/audit.log | grep -v httpd
+  162  seinfo -cfile -x
+  163  seinfo -c file -x
+  164  cd selinux/
+  165  ls
+  166  vim sander.te 
+  167  vim sander.fc
+  168  checkmodule -M -m -o sander.mod sander.te
+  169  semodule_package -o sander.pp -m sander.mod -f sander.fc
+  170  semodule -i sander.pp
+  171  mkdir /opt/sander
+  172  restorecon -Rv /opt/sander
+  173  vim sander.fc
+  174  vim sander.te 
+  175  semanage port -l | grep http_port_t
+  176  semanage permissive -l
+  177  seinfo -aunconfined_domain_type -x
+  178  ls
+  179  dnf install policycoreutils-devel setools-console gcc
+  180  vim mydaemon.
+  181  vim mydaemon.c
+  182  gcc -o mydaemon mydaemon.c
+  183  sudo cp mydaemon /usr/local/bin
+  184  vim mydaemon.service 
+  185  cp mydaemon.service /etc/systemd/system/
+  186  systemctl start mydaemon.service 
+  187  ps Zaux | grep mydae
+  188  sepolicy generate --init /usr/local/bin/mydaemon
+  189  less mydaemon.te 
+  190  less mydaemon.fc
+  191  ./mydaemon.sh 
+  192  man mydaemon_selinux
+  193  mandb
+  194  ls
+  195  less mydaemon_selinux.8 
+  196  systemctl restart mydaemon
+  197  ps Zaux | grep mydae
+  198  grep AVC /var/log/audit/audit.log 
+  199  grep mydaemon | grep AVC /var/log/audit/audit.log > mydaemon.log
+  200  grep AVC /var/log/audit/audit.log 
+  201  grep AVC /var/log/audit/audit.log | grep mydaemon | wc -l
+  202  grep AVC /var/log/audit/audit.log | grep mydaemon > mydaemon.log
+  203  audit2allow < mydaemon.log
+  204  ls
+  205  history | grep audit2allow
+  206  cat mydaemon.log | audit2allow -M mynewdaemon
+  207  less mynewdaemon.te
+  208  less mynewdaemon.fc
+  209  semodule -i mynewdaemon.pp
+  210  systemctl restart mydaemon.service 
+  211  grep AVC /var/log/audit/audit.log 
+  212  date -d @1771355124
+  213  date
+  214  history
+  215  ps Zaux | less
+  216  ps Zfaux | less
+  217  mkdir ubi
+  218  podman run -v ubi:/ubi:Z -it ubi10
+  219  podman search
+  220  podman search ubi10
+  221  podman run -v ubi:/ubi:Z -it docker.io/redhat/ubi10
+  222  podman run -v ubi:/ubi:Z -it docker.io/redhat/ubi9
+  223  ps Zfaux | less
+  224  ls -ldZ ubi/
+  225  echo ROOT COMMANDS >> /tmp/feb26.txt 
+  226  history >> /tmp/feb26.txt 
